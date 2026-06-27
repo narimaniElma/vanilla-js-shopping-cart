@@ -158,14 +158,10 @@ const showProducts = () => {
 const addProductToBasket = (productId) => {
   const mainProduct = products.find((product) => product.id === productId);
 
-  const isProductInBasket = basket.some((product) => product.id === productId);
+  const productInBasket = basket.find((product) => product.id === productId);
 
-  if (isProductInBasket) {
-    basket.map((product) => {
-      if (product.id === productId) {
-        product.count += 1;
-      }
-    });
+  if (productInBasket) {
+    productInBasket.count++;
   } else {
     const basketNewProduct = {
       id: mainProduct.id,
