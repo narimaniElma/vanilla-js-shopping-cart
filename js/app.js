@@ -121,8 +121,8 @@ const totalPriceElem = document.querySelector(".total-price");
 const clearBasketBtn = document.querySelector(".clear-button");
 const completeShoppingBtn = document.querySelector(".complete-button");
 
-function showProducts() {
-  products.forEach(function (product) {
+const showProducts = () => {
+  products.forEach((product) => {
     productsContainer.insertAdjacentHTML(
       "beforeend",
       `
@@ -153,20 +153,15 @@ function showProducts() {
       `,
     );
   });
-}
+};
 
-function addProductToBasket(productId) {
-  const mainProduct = products.find(function (product) {
-    return product.id === productId;
-  });
+const addProductToBasket = (productId) => {
+  const mainProduct = products.find((product) => product.id === productId);
 
-  const isProductInBasket = basket.some(function (product) {
-    return product.id === productId;
-  });
+  const isProductInBasket = basket.some((product) => product.id === productId);
 
   if (isProductInBasket) {
-    // increaseProductCount(mainProduct.id)
-    basket.map(function (product) {
+    basket.map((product) => {
       if (product.id === productId) {
         product.count += 1;
       }
@@ -186,16 +181,16 @@ function addProductToBasket(productId) {
 
   saveBasketInLocalStorage();
   calculateTotalPrice();
-}
+};
 
-function showBasketProducts() {
+const showBasketProducts = () => {
   basketProductsContainer.innerHTML = "";
 
   if (!basket.length) {
     basketProductsContainer.innerHTML = `<p class="empty-basket">سبد خرید شما خالی می باشد :(</p>`;
   }
 
-  basket.forEach(function (basketProduct) {
+  basket.forEach((basketProduct) => {
     basketProductsContainer.insertAdjacentHTML(
       "beforeend",
       `
@@ -235,15 +230,13 @@ function showBasketProducts() {
 
   calculateTotalPrice();
   productsCountElemInBasket.innerHTML = `(${basket.length})`;
-}
+};
 
-function calculateTotalPrice() {
+const calculateTotalPrice = () => {
   let totalPrice = 0;
   let totalAmount = 0;
 
-  basket.forEach(function (basketProduct) {
-    totalAmount += basketProduct.count;
-  });
+  basket.forEach((basketProduct) => totalAmount += basketProduct.count);
 
   if (totalAmount === 0) {
     productsCountElem.classList.add("hidden");
@@ -252,28 +245,23 @@ function calculateTotalPrice() {
     productsCountElem.innerHTML = totalAmount;
   }
 
-  basket.forEach(function (basketProduct) {
-    totalPrice += basketProduct.count * basketProduct.price;
-  });
+  basket.forEach((basketProduct) => totalPrice += basketProduct.count * basketProduct.price)
 
   totalPriceElem.innerHTML = totalPrice.toLocaleString();
-}
+};
 
-function increaseProductCount(productId) {
-  const productToIncreaseCount = basket.find(function (basketProduct) {
-    return basketProduct.id === productId;
-  });
+const increaseProductCount = (productId) => {
+  const productToIncreaseCount = basket.find((basketProduct) => basketProduct.id === productId);
 
   productToIncreaseCount.count += 1;
 
   saveBasketInLocalStorage();
   showBasketProducts();
   calculateTotalPrice();
-}
-function decreaseProductCount(productId) {
-  const productToDecreaseCount = basket.find(function (basketProduct) {
-    return basketProduct.id === productId;
-  });
+};
+
+const decreaseProductCount = (productId) => {
+  const productToDecreaseCount = basket.find((basketProduct) => basketProduct.id === productId);
 
   productToDecreaseCount.count -= 1;
 
@@ -284,23 +272,20 @@ function decreaseProductCount(productId) {
   saveBasketInLocalStorage();
   showBasketProducts();
   calculateTotalPrice();
-}
-function removeProductFromBasket(productId) {
-  const productToRemove = basket.findIndex(function (basketProduct) {
-    return basketProduct.id === productId;
-  });
+};
+
+const removeProductFromBasket = (productId) => {
+  const productToRemove = basket.findIndex((basketProduct) => basketProduct.id === productId);
 
   basket.splice(productToRemove, 1);
   saveBasketInLocalStorage();
   showBasketProducts();
   calculateTotalPrice();
-}
+};
 
-function saveBasketInLocalStorage() {
-  localStorage.setItem("basket", JSON.stringify(basket));
-}
+const saveBasketInLocalStorage = () => localStorage.setItem("basket", JSON.stringify(basket));
 
-function getProductsFromLocalStorage() {
+const getProductsFromLocalStorage = () => {
   const localBaskets = JSON.parse(localStorage.getItem("basket"));
 
   if (localBaskets) {
@@ -309,23 +294,20 @@ function getProductsFromLocalStorage() {
 
   showProducts();
   showBasketProducts(localBaskets);
-}
+};
 
-function openBasket() {
+const openBasket = () => {
   basketScreen.classList.remove("hidden");
   showBasketProducts();
-}
+};
 
-function hideBasket() {
-  basketScreen.classList.add("hidden");
-}
-function clearBasket() {
-  // basketProductsContainer.innerHTML = "";
-  // localStorage.removeItem("basket");
+const hideBasket = () => basketScreen.classList.add("hidden");
+
+const clearBasket = () => {
   basket = [];
   showBasketProducts();
   saveBasketInLocalStorage();
-}
+};
 
 openBasketBtn.addEventListener("click", openBasket);
 closeBasketBtn.addEventListener("click", hideBasket);
