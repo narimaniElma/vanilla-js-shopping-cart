@@ -164,12 +164,8 @@ const addProductToBasket = (productId) => {
     productInBasket.count++;
   } else {
     const basketNewProduct = {
-      id: mainProduct.id,
-      title: mainProduct.title,
-      price: mainProduct.price,
-      img: mainProduct.img,
+      ...mainProduct,
       count: 1,
-      description: mainProduct.description,
     };
 
     basket.push(basketNewProduct);
@@ -232,7 +228,7 @@ const calculateTotalPrice = () => {
   let totalPrice = 0;
   let totalAmount = 0;
 
-  basket.forEach((basketProduct) => totalAmount += basketProduct.count);
+  basket.forEach((basketProduct) => (totalAmount += basketProduct.count));
 
   if (totalAmount === 0) {
     productsCountElem.classList.add("hidden");
@@ -241,13 +237,18 @@ const calculateTotalPrice = () => {
     productsCountElem.innerHTML = totalAmount;
   }
 
-  basket.forEach((basketProduct) => totalPrice += basketProduct.count * basketProduct.price)
+  basket.forEach(
+    (basketProduct) =>
+      (totalPrice += basketProduct.count * basketProduct.price),
+  );
 
   totalPriceElem.innerHTML = totalPrice.toLocaleString();
 };
 
 const increaseProductCount = (productId) => {
-  const productToIncreaseCount = basket.find((basketProduct) => basketProduct.id === productId);
+  const productToIncreaseCount = basket.find(
+    (basketProduct) => basketProduct.id === productId,
+  );
 
   productToIncreaseCount.count += 1;
 
@@ -257,7 +258,9 @@ const increaseProductCount = (productId) => {
 };
 
 const decreaseProductCount = (productId) => {
-  const productToDecreaseCount = basket.find((basketProduct) => basketProduct.id === productId);
+  const productToDecreaseCount = basket.find(
+    (basketProduct) => basketProduct.id === productId,
+  );
 
   productToDecreaseCount.count -= 1;
 
@@ -271,7 +274,9 @@ const decreaseProductCount = (productId) => {
 };
 
 const removeProductFromBasket = (productId) => {
-  const productToRemove = basket.findIndex((basketProduct) => basketProduct.id === productId);
+  const productToRemove = basket.findIndex(
+    (basketProduct) => basketProduct.id === productId,
+  );
 
   basket.splice(productToRemove, 1);
   saveBasketInLocalStorage();
@@ -279,7 +284,8 @@ const removeProductFromBasket = (productId) => {
   calculateTotalPrice();
 };
 
-const saveBasketInLocalStorage = () => localStorage.setItem("basket", JSON.stringify(basket));
+const saveBasketInLocalStorage = () =>
+  localStorage.setItem("basket", JSON.stringify(basket));
 
 const getProductsFromLocalStorage = () => {
   const localBaskets = JSON.parse(localStorage.getItem("basket"));
